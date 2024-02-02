@@ -1,0 +1,4647 @@
+kiosk_mode:
+  non_admin_settings:
+    kiosk: true
+    ignore_entity_settings: true
+  entity_settings:
+    - entity:
+        input_boolean.kiosk_mode: 'on'
+      hide_header: true
+    - entity:
+        input_boolean.kiosk_mode: 'off'
+      hide_header: false
+      hide_sidebar: false
+      showTopMenuOnMobile: false
+sidebar:
+  width:
+    mobile: 0
+    tablet: 11
+    desktop: 15
+    breakpoints:
+      mobile: 768
+      tablet: 1024
+  title: Office
+  clock: true
+  twelveHourVersion: false
+  date: true
+  digitalClock: false
+  digitalClockWithSeconds: false
+  sidebarMenu:
+    - action: navigate
+      navigation_path: /home-tablet/home1
+      name: Home
+      active: true
+    - action: navigate
+      navigation_path: /home-tablet/heating
+      name: Heating
+    - action: navigate
+      navigation_path: /home-tablet/solar
+      name: Solar
+    - action: navigate
+      navigation_path: /home-tablet/Octopus
+      name: Octopus
+    - action: navigate
+      navigation_path: /home-tablet/media
+      name: Media
+    - action: navigate
+      navigation_path: /home-tablet/camera
+      name: Cameras
+    - action: navigate
+      navigation_path: /home-tablet/sockets
+      name: Plugs
+    - action: navigate
+      navigation_path: /home-tablet/hot tub
+      name: Hot Tub
+    - action: navigate
+      navigation_path: /home-tablet/admin
+      name: Admin
+  style: |
+    :host {
+        --sidebar-background: #1a2636;
+        --sidebar-text-color: #FFF;
+        --face-color: #b3b3b3;
+        --face-border-color: white;
+        --clock-hands-color: #2b374e;
+        --clock-seconds-hand-color: #FF4B3E;
+        --clock-middle-background: white;
+        --clock-middle-border: black;  
+        text-align: center;
+    }        
+
+    .digitalClock {
+        text-align: center;
+        padding-bottom: 1px;
+        padding-top: 10px;
+        font-size:50px!important;
+        font-style: bold
+        line-height: 60px;        
+    }   
+    .date {
+        text-align: center;
+        padding-bottom: 1px;
+        font-size:25px!important;
+        line-height: 60px;        
+    }     
+  bottomCard:
+    type: vertical-stack
+    cardOptions:
+      cards:
+        - type: vertical-stack
+          cards:
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: toggle
+                  entity: input_boolean.kiosk_mode
+                  icon: mdi:home-switch
+                  show_icon: true
+                  show_state: false
+                  name: false
+                  show_name: false
+                  styles:
+                    icon:
+                      - width: 50%
+                      - color: black
+                    card:
+                      - padding-top: 0px
+                - type: custom:button-card
+                  entity: input_boolean.kiosk_mode
+                  icon: mdi:temperature-celsius
+                  show_icon: true
+                  show_state: false
+                  name: false
+                  show_name: false
+                  styles:
+                    icon:
+                      - width: 50%
+                      - color: black
+                    card:
+                      - padding-top: 0px
+            - type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  tap_action:
+                    action: toggle
+                  entity: input_boolean.kiosk_mode_sidebar
+                  icon: mdi:home-plus
+                  show_icon: true
+                  show_state: false
+                  name: false
+                  show_name: false
+                  styles:
+                    icon:
+                      - width: 50%
+                      - color: black
+                    card:
+                      - padding-top: 0px
+                - type: custom:button-card
+                  tap_action:
+                    action: toggle
+                  entity: input_boolean.kiosk_mode_sidebar
+                  icon: mdi:folder
+                  show_icon: true
+                  show_state: false
+                  name: false
+                  show_name: false
+                  styles:
+                    icon:
+                      - width: 50%
+                      - color: black
+                    card:
+                      - padding-top: 0px
+      cardStyle: |
+        :host {
+          width: 100%;
+          background-color:#FFF;
+        }
+views:
+  - theme: Caule Black Blue Glass
+    title: Home1
+    icon: mdi:home
+    path: Home1
+    layout:
+      width: 250
+      max_cols: 3
+    type: custom:horizontal-layout
+    badges: []
+    cards:
+      - square: false
+        type: grid
+        cards:
+          - square: false
+            type: grid
+            cards:
+              - show_current: true
+                show_forecast: true
+                type: weather-forecast
+                entity: weather.martin_s_home_assistant
+                forecast_type: daily
+                tap_action:
+                  action: call-service
+                  service: browser_mod.popup
+                  target:
+                    entity_id: media_player.office_hmi_browser
+                  data:
+                    dismissable: true
+                    title: Rain Radar
+                    autoclose: false
+                    timeout: 16000
+                    size: fullscreen
+                    content:
+                      type: custom:weather-radar-card
+                      data_source: RainViewer-UniversalBlue
+                      map_style: Satellite
+                      show_zoom: true
+                      square_map: false
+                      extra_labels: true
+                      show_range: true
+                      show_scale: true
+                      show_marker: true
+                      show_playback: true
+                      static_map: false
+                      frame_count: 50
+                      zoom_level: 8
+                name: Tap for Rain Radar
+              - type: custom:horizon-card
+                fields:
+                  sunrise: true
+                  sunset: true
+                  dawn: true
+                  noon: true
+                  dusk: true
+                  moonrise: true
+                  moonset: true
+                  moon_phase: true
+            columns: 1
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: sensor.solax_today_s_import_energy
+                    show_icon: true
+                    color: red
+                    show_state: true
+                    name: Today Import Energy
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 40%,
+                            rgb(0,0,0,90%))
+                        - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 200px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                  - type: custom:button-card
+                    entity: sensor.solax_today_s_export_energy
+                    show_icon: true
+                    color: lightgreen
+                    show_state: true
+                    name: Today Export Energy
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 40%,
+                            rgb(0,0,0,90%))
+                        - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 200px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: >-
+                      sensor.octopus_energy_electricity_16k0310855_1012816660994_previous_accumulative_cost
+                    show_icon: true
+                    color: red
+                    show_state: true
+                    name: Electric Cost (Yesterday)
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 40%,
+                            rgb(0,0,0,90%))
+                        - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 200px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                  - type: custom:button-card
+                    entity: >-
+                      sensor.octopus_energy_gas_g4ks0082804161_2960579604_previous_accumulative_cost
+                    show_icon: true
+                    color: red
+                    show_state: true
+                    name: Gas Cost (Yesterday)
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 40%,
+                            rgb(0,0,0,90%))
+                        - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 200px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+        columns: 1
+        card_mod:
+          style: |
+            ha-card {
+              color: red;
+            }
+      - square: false
+        type: grid
+        cards:
+          - type: custom:power-flow-card-plus
+            entities:
+              battery:
+                entity:
+                  '0': s
+                  '1': e
+                  '2': 'n'
+                  '3': s
+                  '4': o
+                  '5': r
+                  '6': .
+                  '7': s
+                  '8': o
+                  '9': l
+                  '10': a
+                  '11': x
+                  '12': _
+                  '13': b
+                  '14': a
+                  '15': t
+                  '16': t
+                  '17': e
+                  '18': r
+                  '19': 'y'
+                  '20': _
+                  '21': c
+                  '22': a
+                  '23': p
+                  '24': a
+                  '25': c
+                  '26': i
+                  '27': t
+                  '28': 'y'
+                  production: sensor.solax_battery_power_charge
+                state_of_charge: sensor.solax_battery_capacity
+                color_icon: true
+                color_state_of_charge_value: false
+                display_state: one_way
+                color:
+                  consumption:
+                    - 255
+                    - 0
+                    - 0
+                  production:
+                    - 0
+                    - 255
+                    - 0
+                color_circle: true
+                invert_state: false
+              grid:
+                entity:
+                  '0': s
+                  '1': e
+                  '2': 'n'
+                  '3': s
+                  '4': o
+                  '5': r
+                  '6': .
+                  '7': s
+                  '8': o
+                  '9': l
+                  '10': a
+                  '11': x
+                  '12': _
+                  '13': g
+                  '14': r
+                  '15': i
+                  '16': d
+                  '17': _
+                  '18': i
+                  '19': m
+                  '20': p
+                  '21': o
+                  '22': r
+                  '23': t
+                  production: sensor.solax_grid_export
+                  consumption: sensor.solax_grid_import
+                color_icon: true
+                color:
+                  consumption:
+                    - 226
+                    - 36
+                    - 0
+                  production:
+                    - 150
+                    - 211
+                    - 95
+                display_zero_tolerance: 20
+                color_circle: true
+                name: Grid
+                display_state: two_way
+              solar:
+                entity: sensor.solax_inverter_power
+                display_zero_state: true
+                color_value: true
+                color_icon: true
+                color:
+                  - 147
+                  - 227
+                  - 253
+                name: Inverter
+                icon: mdi:laptop
+                secondary_info:
+                  entity: sensor.solax_pv_power_total
+                  unit_of_measurement: W
+                  icon: mdi:solar-power
+                  display_zero: true
+              home:
+                entity: sensor.solax_house_load
+                name: House Load
+                color_icon: battery
+                override_state: true
+                subtract_individual: false
+                secondary_info:
+                  unit_of_measurement: A
+                  color_value: false
+                  unit_white_space: false
+                  display_zero: true
+                  entity: sensor.house_load_in_amps
+                  decimals: 1
+                icon: mdi:home
+                use_metadata: false
+              individual1:
+                color_value: true
+                color_icon: true
+                display_zero: true
+                inverted_animation: true
+                entity: sensor.solax_pv_power_2
+                name: PV2
+                unit_of_measurement: W
+                color:
+                  - 255
+                  - 255
+                  - 0
+                display_zero_state: true
+                icon: mdi:solar-power-variant
+                secondary_info:
+                  entity: sensor.solax_pv_current_2
+                  display_zero: true
+                  unit_of_measurement: A
+                  decimals: 2
+              individual2:
+                entity: sensor.solax_pv_power_1
+                name: PV1
+                color_value: true
+                color_icon: true
+                display_zero: true
+                inverted_animation: true
+                color:
+                  - 255
+                  - 255
+                  - 0
+                display_zero_state: true
+                secondary_info:
+                  entity: sensor.solax_pv_current_1
+                  display_zero: true
+                  unit_of_measurement: A
+                  decimals: 1
+                icon: mdi:solar-power-variant
+              fossil_fuel_percentage: {}
+            clickable_entities: true
+            display_zero_lines:
+              mode: show
+              transparency: 50
+              grey_color:
+                - 189
+                - 189
+                - 189
+            use_new_flow_rate_model: true
+            w_decimals: 0
+            kw_decimals: 1
+            min_flow_rate: 0.75
+            max_flow_rate: 6
+            min_expected_power: 0.01
+            watt_threshold: 1000
+            max_expected_power: 5000
+            title: null
+            card_mod: null
+            style: |
+              ha-card {
+              margin-top: 1px;
+              height: 360px !important;
+          - type: horizontal-stack
+            cards:
+              - type: custom:mushroom-entity-card
+                entity: sensor.hot_tap_heater_on
+                icon: mdi:kettle-steam
+                icon_color: red
+                layout: vertical
+                name: Hot Tap
+                secondary_info: none
+                primary_info: none
+                card_mod:
+                  style: |
+                    ha-state-icon {
+                      {{ 'animation: boil 500ms infinite;' if is_state('sensor.hot_tap_heater_on', 'on') }}
+                    }
+                      @keyframes boil {
+                        0%, 100% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        10% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); clip-path: polygon(0 0, 66% 10%, 67% 30%, 88% 52%, 100% 100%, 0 100%); }
+                        20% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        30% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        40% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        50% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        60% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        70% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        80% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        90% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                      }
+                        ha-card {
+                        margin-top: 0px;
+                        height: 55px !important;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        }        
+              - type: custom:mushroom-entity-card
+                entity: sensor.tumble_dryer_heater_on
+                name: Dryer
+                icon: mdi:tumble-dryer-off
+                icon_color: red
+                layout: vertical
+                secondary_info: none
+                primary_info: none
+                card_mod:
+                  style: |
+                    ha-state-icon {
+                      {{ 'animation: boil 500ms infinite;' if is_state('sensor.tumble_dryer_heater_on', 'on') }}
+                    }
+                      @keyframes boil {
+                        0%, 100% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        10% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); clip-path: polygon(0 0, 66% 10%, 67% 30%, 88% 52%, 100% 100%, 0 100%); }
+                        20% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        30% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        40% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        50% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        60% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        70% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        80% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        90% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                      }
+                        ha-card {
+                        margin-top: 0px;
+                        height: 55px !important;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        }      
+              - type: custom:mushroom-entity-card
+                entity: sensor.bathroom_ufh_status
+                name: UFH
+                icon: mdi:heating-coil
+                icon_color: grey
+                layout: vertical
+                secondary_info: none
+                primary_info: none
+                card_mod:
+                  style: |
+                    ha-state-icon {
+                      {{ 'animation: boil 500ms infinite;' if is_state('sensor.bathroom_ufh_status', 'ON') }}
+                    }
+                      @keyframes boil {
+                        0%, 100% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        10% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); clip-path: polygon(0 0, 66% 10%, 67% 30%, 88% 52%, 100% 100%, 0 100%); }
+                        20% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        30% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        40% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        50% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        60% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        70% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        80% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        90% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                      }
+                        ha-card {
+                        margin-top: 0px;
+                        height: 55px !important;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        }      
+              - type: custom:mushroom-entity-card
+                entity: sensor.hot_tub_heater_on
+                icon: mdi:hot-tub
+                icon_color: red
+                layout: vertical
+                name: Hot Tub
+                secondary_info: none
+                primary_info: none
+                card_mod:
+                  style: |
+                    ha-state-icon {
+                      {{ 'animation: boil 500ms infinite;' if is_state('sensor.hot_tub_heater_on', 'ON') }}
+                    }
+                      @keyframes boil {
+                        0%, 100% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        10% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); clip-path: polygon(0 0, 66% 10%, 67% 30%, 88% 52%, 100% 100%, 0 100%); }
+                        20% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        30% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        40% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        50% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        60% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        70% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        80% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                        90% { transform: translate({{ range(-20, 20) | random / 10 }}px, {{ range(-20, 20) | random / 10 }}px) rotate({{ range(-15, 15) | random }}deg); }
+                      }
+                        ha-card {
+                        margin-top: 0px;
+                        height: 55px !important;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        }     
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                entity: sensor.solax_house_load
+                unit: w
+                needle: false
+                severity:
+                  green: 0
+                  yellow: 2000
+                  red: 2500
+                name: House Load (KW)
+                styles: null
+                card:
+                  - font: 10px/15px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 10%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 115px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+                max: 5000
+              - type: gauge
+                entity: sensor.solax_pv_power_total
+                name: PV Generation
+                unit: W
+                needle: false
+                min: 0
+                max: 5000
+                severity:
+                  green: 2000
+                  yellow: 1000
+                  red: 0
+                styles: null
+                card:
+                  - font: 10px/15px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 40%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                    margin-top: 0px;
+                    height: 115px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                entity: sensor.solax_grid_import
+                unit: Kw
+                needle: false
+                max: 5000
+                min: 0
+                severity:
+                  green: 0
+                  yellow: 1800
+                  red: 3000
+                name: Input Power
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 40%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 115px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+              - type: gauge
+                min: 0
+                entity: sensor.solax_grid_export
+                unit: Kw
+                needle: false
+                name: Export Power
+                max: 5000
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 40%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                    margin-top: 0px;
+                    height: 115px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                entity: sensor.solax_battery_capacity
+                name: Battery (SOC)
+                needle: false
+                severity:
+                  green: 40
+                  yellow: 10
+                  red: 0
+                min: 0
+                unit: '%'
+                max: 100
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 10%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 115px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+              - type: gauge
+                entity: sensor.time_left_on_battery_min_soc
+                unit: Hrs
+                needle: false
+                severity:
+                  green: 5
+                  yellow: 3
+                  red: 1
+                min: 1
+                max: 20
+                name: Battery Autonomy
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 10%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 115px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+        columns: 1
+      - square: false
+        type: grid
+        cards:
+          - show_state: false
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: camera.reolink_camera_sub
+            camera_image: camera.reolink_camera_sub
+          - show_state: false
+            show_name: false
+            camera_view: live
+            type: picture-entity
+            entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_102
+            camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_102
+          - type: custom:mushroom-entity-card
+            entity: sensor.solax_inverter_op_state
+            icon: mdi:solar-power-variant-outline
+            icon_color: pink
+            icon_type: icon
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.solax_inverter_op_state') == 'Self-Use Mode' %}
+                    --ha-card-background: #33cc33;
+                  {% elif states('sensor.solax_inverter_op_state') == 'Force Charge Mode' %}
+                    --ha-card-background: #cc0000;
+                  {% elif states('sensor.solax_inverter_op_state') == 'Force Charge Mode (min)' %}
+                    --ha-card-background: #ff9900;
+                  {% elif states('sensor.solax_inverter_op_state') == 'Force Discharge Mode' %}
+                    --ha-card-background: #000066;
+                  {% elif states('sensor.solax_inverter_op_state') == 'Battery Hold Mode' %}
+                    --ha-card-background: #660033;
+                  {% else %}  
+                    --ha-card-background: #808080;
+                  {% endif %}
+                margin-top: 0px;
+                height: 50px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+          - square: false
+            type: grid
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    name: Heating
+                    show_state: true
+                    color: white
+                    state:
+                      - value: 'ON'
+                        icon: mdi:weather-hurricane-outline
+                        color: red
+                        spin: true
+                        styles:
+                          name:
+                            - color: white
+                            - font: 15px/15px Arial
+                            - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                          card:
+                            - background: >-
+                                linear-gradient(rgb(77,0,8,100%) 100%, rgb(77,
+                                0, 8,100%))
+                            - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                            - border: 3px double rgb(255,0,0, 100%)
+                            - height: 110px
+                          icon:
+                            - width: 35%
+                      - value: 'OFF'
+                        styles:
+                          name:
+                            - color: black
+                            - font: 20px/20px Arial
+                          card:
+                            - font: 15px/20px Arial
+                            - background: >-
+                                linear-gradient(rgb(102,153,255, 100%),
+                                rgb(102,153,255,100%))
+                            - border: 5px double rgb(18,81,219, 50%)
+                            - height: 110px
+                          icon:
+                            - width: 35%
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white;
+                          margin-left: 0px;
+                          margin-right: 20px;
+                          box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                    tap_action:
+                      action: navigate
+                      navigation_path: /kitchen-hmi/heating
+                    entity: sensor.home_state
+                  - type: custom:button-card
+                    entity: >-
+                      sensor.octopus_energy_electricity_16k0310855_1012816660994_current_rate
+                    show_entity_picture: true
+                    entity_picture: /local/Images/Octopus3.png
+                    show_state: true
+                    name: Current Rate
+                    styles:
+                      card:
+                        - font: 15px/15px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 40%,
+                            rgb(0,0,0,90%))
+                        - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 200px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+              - type: horizontal-stack
+                cards:
+                  - aspect_ratio: 1.2/1
+                    entity: sensor.solax_battery_capacity
+                    name: Battery SOC
+                    show_state: true
+                    state:
+                      - color: rgb(0,255,0)
+                        icon: mdi:battery
+                        operator: '>='
+                        value: 95
+                      - color: rgb(0,255,0)
+                        icon: mdi:battery-90
+                        operator: '>='
+                        value: 85
+                      - color: rgb(0,255,0)
+                        operator: '>='
+                        value: 75
+                        icon: mdi:battery-80
+                      - color: rgb(0,255,0)
+                        operator: '>='
+                        value: 65
+                        icon: mdi:battery-70
+                      - color: rgb(153, 255, 102)
+                        operator: '>='
+                        value: 55
+                        icon: mdi:battery-60
+                      - color: rgb(153, 255, 102)
+                        icon: mdi:battery-50
+                        operator: '>='
+                        value: 45
+                      - color: rgb(255, 153, 51)
+                        icon: mdi:battery-40
+                        operator: '>='
+                        value: 31
+                      - color: rgb(255, 153, 51)
+                        icon: mdi:battery-30
+                        operator: '>='
+                        value: 25
+                      - color: rgb(255,255,0)
+                        icon: mdi:battery-20
+                        operator: '>='
+                        value: 13
+                      - color: rgb(255,0,0)
+                        icon: mdi:battery-10
+                        operator: <
+                        styles:
+                          icon:
+                            - animation: blink 2s ease infinite
+                        value: 12
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/15px Arial
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 20%,
+                            rgb(0,0,0,90%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 3px double rgb(255,0,0, 100%)
+                        - height: 110px
+                    type: custom:button-card
+                  - type: gauge
+                    entity: sensor.outside_temperature
+                    name: Outside Temperature
+                    min: -15
+                    max: 35
+                    needle: true
+                    styles: null
+                    card:
+                      - font: 15px/20px Arial
+                      - background: >-
+                          linear-gradient(rgb(128,128,128, 10%), 40%,
+                          rgb(0,0,0,90%))
+                      - border: 3px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                        margin-top: 0px;
+                        height: 115px !important;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                    segments:
+                      - from: -15
+                        color: '#386AFF'
+                      - from: -13.93
+                        color: '#3474FF'
+                      - from: -12.86
+                        color: '#317EFF'
+                      - from: -11.79
+                        color: '#2E89FF'
+                      - from: -10.71
+                        color: '#2A93FF'
+                      - from: -9.64
+                        color: '#279DFF'
+                      - from: -8.57
+                        color: '#24A8FF'
+                      - from: -7.5
+                        color: '#21B2FF'
+                      - from: -6.43
+                        color: '#1DBCFF'
+                      - from: -5.36
+                        color: '#1AC7FF'
+                      - from: -4.29
+                        color: '#17D1FF'
+                      - from: -3.21
+                        color: '#13DBFF'
+                      - from: -2.14
+                        color: '#10E6FF'
+                      - from: -1.07
+                        color: '#0DF0FF'
+                      - from: 0
+                        color: '#0AFBFF'
+                      - from: 1.58
+                        color: '#0CFBEA'
+                      - from: 3.17
+                        color: '#0FFBD5'
+                      - from: 4.75
+                        color: '#12FBC0'
+                      - from: 6.33
+                        color: '#15FBAB'
+                      - from: 7.92
+                        color: '#18FB96'
+                      - from: 9.5
+                        color: '#1BFB81'
+                      - from: 11.08
+                        color: '#1DFB6C'
+                      - from: 12.67
+                        color: '#20FB57'
+                      - from: 14.25
+                        color: '#23FB42'
+                      - from: 15.83
+                        color: '#26FB2D'
+                      - from: 17.42
+                        color: '#29FB18'
+                      - from: 19
+                        color: '#2CFC03'
+                      - from: 19.74
+                        color: '#36EE03'
+                      - from: 20.47
+                        color: '#41E103'
+                      - from: 21.21
+                        color: '#4CD403'
+                      - from: 21.95
+                        color: '#57C703'
+                      - from: 22.68
+                        color: '#62BA03'
+                      - from: 23.42
+                        color: '#6DAD03'
+                      - from: 24.16
+                        color: '#78A003'
+                      - from: 24.89
+                        color: '#839303'
+                      - from: 25.63
+                        color: '#8E8603'
+                      - from: 26.37
+                        color: '#997803'
+                      - from: 27.11
+                        color: '#A46B03'
+                      - from: 27.84
+                        color: '#AF5E03'
+                      - from: 28.58
+                        color: '#BA5103'
+                      - from: 29.32
+                        color: '#C54403'
+                      - from: 30.05
+                        color: '#D03703'
+                      - from: 30.79
+                        color: '#DB2A03'
+                      - from: 31.53
+                        color: '#E61D03'
+                      - from: 32.26
+                        color: '#F11003'
+                      - from: 33
+                        color: '#FC0303'
+            columns: 1
+        columns: 1
+  - title: Heating
+    background: center / cover no-repeat url('/local/Floorplan/Lava.jpeg')  fixed
+    path: heating
+    icon: mdi:fire
+    type: custom:horizontal-layout
+    layout:
+      width: 350
+      max_cols: 3
+    theme: Caule Black Blue Glass
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: custom:simple-thermostat
+            entity: climate.hive_living_rm_trv
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Living Room
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_living_rm_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.hive_dining_room_trv
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Dining Room
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_dining_room_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.hive_kitchen_trv
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Kitchen
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_kitchen_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.hive_extension_trv
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Extension
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_extension_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.hive_hallway_trv
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Hallway
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_hallway_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+      - square: false
+        type: grid
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: custom:digital-clock
+            card_mod:
+              style: |
+                ha-card {
+                  --ha-card-background: #6699ff;
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+            dateFormat:
+              weekday: long
+              day: 2-digit
+              month: long
+            timeFormat:
+              hour: 2-digit
+              minute: 2-digit
+          - type: thermostat
+            entity: climate.home
+            name: Main Thermostat
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.home_state') == 'ON' %}
+                    --ha-card-background: #4d0008;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 385px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+          - square: false
+            type: grid
+            cards:
+              - type: custom:button-card
+                name: Heating
+                show_state: true
+                color: white
+                state:
+                  - value: 'ON'
+                    icon: mdi:weather-hurricane-outline
+                    color: red
+                    spin: true
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 5px double rgb(255,0,0, 100%)
+                  - value: 'OFF'
+                    styles:
+                      name:
+                        - color: black
+                        - font: 15px/20px Arial
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 100%),
+                            rgb(102,153,255,100%))
+                        - border: 5px double rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                      height: 120px !important;
+                      margin-top: 5px;
+                      margin-left: 0px;
+                      margin-right: 20px;
+                      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                tap_action:
+                  action: more-info
+                entity: sensor.home_state
+              - type: custom:button-card
+                name: Press to Boost
+                show_state: true
+                color: white
+                state:
+                  - value: 'ON'
+                    icon: mdi:fire
+                    color: red
+                    spin: null
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 5px double rgb(255,0,0, 100%)
+                  - value: 'OFF'
+                    styles:
+                      name:
+                        - color: black
+                        - font: 15px/20px Arial
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 100%),
+                            rgb(102,153,255,100%))
+                        - border: 5px double rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      margin-top: 5px;
+                      color: white;
+                      height: 120px !important;
+                      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                tap_action:
+                  action: navigate
+                  navigation_path: '#Boost'
+                entity: sensor.home_boost
+            columns: 2
+        columns: 1
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: custom:simple-thermostat
+            entity: climate.hollies_room
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Hollies Room
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hollies_room_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.landing
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Landing
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.landing_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.bedroom_1
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Bedroom Wall Radiator
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.bedroom_1_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.bedroom_2
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Bedroom Window Rad
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.bedroom_2_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+          - type: custom:simple-thermostat
+            entity: climate.office
+            layout:
+              step: row
+              mode:
+                icons: true
+                headings: true
+                names: true
+            header:
+              name: Office
+            control: false
+            tap_action:
+              action: more-info
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.office_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 5px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border:  none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 1px;
+                --st-font-size-title: 30px;
+                --st-font-size-sensors: 15px;
+                --st-spacing: 1px;
+                  }
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: pop-up
+            hash: '#Boost'
+            name: Heating Boost Options
+            icon: mdi:heating-coil
+            auto_close: '15000'
+            margin: 400px
+            margin_top_mobile: 50px
+            margin_top_desktop: 50px
+            bg_color: '#6699ff'
+            width_desktop: 400px
+          - type: custom:bubble-card
+            card_type: separator
+            name: Daytime Time Settings
+            icon: mdi:sun-thermometer-outline
+          - type: custom:mushroom-number-card
+            entity: input_number.helper_set_all_trvs
+            display_mode: slider
+            fill_container: false
+            icon_color: red
+            layout: vertical
+            primary_info: name
+            name: Set ALL TRV's Temperature
+            secondary_info: state
+            style: |
+              ha-card {
+              margin-top: 0px;
+              height: 160px !important;
+              margin-left: 0px;
+              margin-right: 0px;
+              border: none;
+              --primary-text-color: black;
+              --secondary-text-color: black;
+              box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 10px;
+                --st-font-size-title: 20px;
+                --st-font-size-sensors: 20px;
+                --st-spacing: 1px;
+              }
+          - type: custom:bubble-card
+            card_type: button
+            show_state: false
+            entity: script.script_set_all_trvs_to_helper_value
+            icon: mdi:power
+            name: Press to set ALL heating Levels
+            card_mod: null
+            style: |
+              ha-card {
+              margin-top: 0px;
+              height: 25px !important;
+              margin-left: 0px;
+              margin-right: 0px;
+              border: none;
+              --primary-text-color: red;
+              --secondary-text-color: red;
+              box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+              }
+          - type: custom:bubble-card
+            card_type: separator
+            name: Night Time Settings
+            icon: mdi:weather-night
+          - type: custom:mushroom-number-card
+            entity: input_number.heating_set_night_time_temp_for_bedrooms
+            display_mode: slider
+            icon_color: red
+            layout: vertical
+            name: Set Night Time TRV's Temperatures
+            secondary_info: state
+            style: |
+              ha-card {
+              margin-top: 0px;
+              height: 160px !important;
+              margin-left: 0px;
+              margin-right: 0px;
+              border: none;
+              --primary-text-color: black;
+              --secondary-text-color: black;
+              box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
+                --st-font-size-xl: 30px;
+                --st-font-size-m: 10px;
+                --st-font-size-title: 20px;
+                --st-font-size-sensors: 20px;
+                --st-spacing: 1px;
+              }
+          - type: custom:bubble-card
+            card_type: button
+            show_state: false
+            entity: script.heating_script_to_set_night_time_bedroom_temps
+            icon: mdi:power
+            name: Press to set Night Time Temperatures
+            style: |
+              ha-card {
+              margin-top: 0px;
+              height: 25px !important;
+              margin-left: 0px;
+              margin-right: 0px;
+              border: none;
+              --primary-text-color: red;
+              --secondary-text-color: white;
+              box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+              }
+  - title: Solar
+    background: center / cover no-repeat url('/local/Floorplan/Solar_panels.jpeg')  fixed
+    path: solar
+    icon: mdi:solar-power-variant
+    type: custom:horizontal-layout
+    layout:
+      width: 300
+      max_cols: 3
+    theme: Caule Black Gray
+    badges: []
+    cards:
+      - square: false
+        type: grid
+        cards:
+          - type: custom:power-flow-card-plus
+            entities:
+              battery:
+                entity:
+                  '0': s
+                  '1': e
+                  '2': 'n'
+                  '3': s
+                  '4': o
+                  '5': r
+                  '6': .
+                  '7': s
+                  '8': o
+                  '9': l
+                  '10': a
+                  '11': x
+                  '12': _
+                  '13': b
+                  '14': a
+                  '15': t
+                  '16': t
+                  '17': e
+                  '18': r
+                  '19': 'y'
+                  '20': _
+                  '21': c
+                  '22': a
+                  '23': p
+                  '24': a
+                  '25': c
+                  '26': i
+                  '27': t
+                  '28': 'y'
+                  production: sensor.solax_battery_power_charge
+                state_of_charge: sensor.solax_battery_capacity
+                color_icon: true
+                color_state_of_charge_value: false
+                display_state: one_way
+                color:
+                  consumption:
+                    - 255
+                    - 0
+                    - 0
+                  production:
+                    - 0
+                    - 255
+                    - 0
+                color_circle: true
+                invert_state: false
+              grid:
+                entity:
+                  '0': s
+                  '1': e
+                  '2': 'n'
+                  '3': s
+                  '4': o
+                  '5': r
+                  '6': .
+                  '7': s
+                  '8': o
+                  '9': l
+                  '10': a
+                  '11': x
+                  '12': _
+                  '13': g
+                  '14': r
+                  '15': i
+                  '16': d
+                  '17': _
+                  '18': i
+                  '19': m
+                  '20': p
+                  '21': o
+                  '22': r
+                  '23': t
+                  production: sensor.solax_grid_export
+                  consumption: sensor.solax_grid_import
+                color_icon: true
+                color:
+                  consumption:
+                    - 226
+                    - 36
+                    - 0
+                  production:
+                    - 150
+                    - 211
+                    - 95
+                display_zero_tolerance: 20
+                color_circle: true
+                name: Grid
+                display_state: two_way
+              solar:
+                entity: sensor.solax_inverter_power
+                display_zero_state: true
+                color_value: true
+                color_icon: true
+                color:
+                  - 147
+                  - 227
+                  - 253
+                name: Inverter
+                icon: mdi:laptop
+                secondary_info:
+                  entity: sensor.solax_pv_power_total
+                  unit_of_measurement: W
+                  icon: mdi:solar-power
+                  display_zero: true
+              home:
+                entity: sensor.solax_house_load
+                name: House Load
+                color_icon: battery
+                override_state: true
+                subtract_individual: false
+                secondary_info:
+                  unit_of_measurement: A
+                  color_value: false
+                  unit_white_space: false
+                  display_zero: true
+                  entity: sensor.house_load_in_amps
+                  decimals: 1
+                icon: mdi:home
+                use_metadata: false
+              individual1:
+                color_value: true
+                color_icon: true
+                display_zero: true
+                inverted_animation: true
+                entity: sensor.solax_pv_power_2
+                name: PV2
+                unit_of_measurement: W
+                color:
+                  - 255
+                  - 255
+                  - 0
+                display_zero_state: true
+                icon: mdi:solar-power-variant
+                secondary_info:
+                  entity: sensor.solax_pv_current_2
+                  display_zero: true
+                  unit_of_measurement: A
+                  decimals: 2
+              individual2:
+                entity: sensor.solax_pv_power_1
+                name: PV1
+                color_value: true
+                color_icon: true
+                display_zero: true
+                inverted_animation: true
+                color:
+                  - 255
+                  - 255
+                  - 0
+                display_zero_state: true
+                secondary_info:
+                  entity: sensor.solax_pv_current_1
+                  display_zero: true
+                  unit_of_measurement: A
+                  decimals: 1
+                icon: mdi:solar-power-variant
+              fossil_fuel_percentage: {}
+            clickable_entities: true
+            display_zero_lines:
+              mode: show
+              transparency: 50
+              grey_color:
+                - 189
+                - 189
+                - 189
+            use_new_flow_rate_model: true
+            w_decimals: 0
+            kw_decimals: 1
+            min_flow_rate: 0.75
+            max_flow_rate: 6
+            min_expected_power: 0.01
+            watt_threshold: 1000
+            max_expected_power: 5000
+            title: null
+          - square: false
+            type: grid
+            cards:
+              - type: gauge
+                entity: sensor.solax_house_load
+                unit: w
+                needle: false
+                severity:
+                  green: 0
+                  yellow: 2000
+                  red: 2500
+                name: House Load (KW)
+                styles: null
+                card:
+                  - font: 10px/15px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 10%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 125px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+                max: 5000
+              - type: gauge
+                entity: sensor.solax_grid_import
+                unit: Kw
+                needle: false
+                max: 5000
+                min: 0
+                severity:
+                  green: 0
+                  yellow: 1800
+                  red: 3000
+                name: Input Power
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 40%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod: null
+                style: |
+                  ha-card {
+                  margin-top: 0px;
+                  height: 125px !important;
+                  margin-left: 0px;
+                  margin-right: 0px;
+                  border: none;
+                  --primary-text-color: white;
+                  --secondary-text-color: white;
+                  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                  }
+              - type: gauge
+                min: 0
+                entity: sensor.solax_grid_export
+                unit: Kw
+                needle: false
+                name: Export Power
+                max: 5000
+                styles: null
+                card:
+                  - font: 15px/20px Arial
+                  - background: >-
+                      linear-gradient(rgb(128,128,128, 40%), 40%,
+                      rgb(0,0,0,90%))
+                  - border: 3px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                    margin-top: 0px;
+                    height: 125px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+              - type: gauge
+                needle: false
+                severity:
+                  green: 2000
+                  yellow: 1000
+                  red: 0
+                unit: W
+                name: PV Total 4.51kw (KW)
+                max: 4650
+                entity: sensor.solax_pv_power_total
+              - type: gauge
+                entity: sensor.solax_pv_power_1
+                severity:
+                  green: 1500
+                  yellow: 1000
+                  red: 0
+                unit: W
+                name: PV1 Power 2.46kw (KW)
+                max: 2460
+              - type: gauge
+                entity: sensor.solax_pv_power_2
+                unit: W
+                name: PV2 Power 2.05kw (KW)
+                max: 2050
+                severity:
+                  green: 1500
+                  yellow: 1000
+                  red: 0
+              - type: gauge
+                entity: sensor.solax_battery_capacity
+                unit: '%'
+                name: Battery Capacity (SOC)
+                max: 100
+                severity:
+                  green: 50
+                  yellow: 20
+                  red: 12
+              - type: gauge
+                entity: sensor.solax_battery_power_charge
+                unit: W
+                name: Battery Charge/Discharge (W)
+                max: 5000
+                needle: true
+                min: -5000
+                severity:
+                  green: 1000
+                  yellow: -1000
+                  red: -5000
+              - type: gauge
+                entity: sensor.solax_battery_current_charge
+                unit: A
+                name: Battery Current (A)
+                min: -30
+                max: 30
+                needle: true
+                severity:
+                  green: 1
+                  yellow: -1
+                  red: -30
+            columns: 3
+        columns: 1
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.time_left_on_battery_min_soc
+            unit: Hrs
+            needle: false
+            severity:
+              green: 5
+              yellow: 3
+              red: 1
+            min: 1
+            max: 20
+            name: Battery Autonomy
+            styles: null
+            card:
+              - font: 15px/20px Arial
+              - background: linear-gradient(rgb(128,128,128, 10%), 40%, rgb(0,0,0,90%))
+              - border: 3px solid rgb(18,81,219, 50%)
+            card_mod: null
+            style: |
+              ha-card {
+              margin-top: 0px;
+              height: 120px !important;
+              margin-left: 0px;
+              margin-right: 0px;
+              border: none;
+              --primary-text-color: white;
+              --secondary-text-color: white;
+              box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+              }
+          - type: custom:octopus-energy-rates-card
+            currentEntity: >-
+              event.octopus_energy_electricity_16k0310855_1012816660994_current_day_rates
+            targetTimesEntity: binary_sensor.octopus_energy_target_octopus_high_rate_4hours
+            cols: 2
+            hour12: false
+            showday: true
+            showpast: false
+            title: Octopus Import - p/kWh
+            unitstr: p
+            lowlimit: 10
+            mediumlimit: 20
+            highlimit: 28
+            roundUnits: 2
+            cheapest: true
+            multiplier: 100
+          - type: custom:apexcharts-card
+            header:
+              show: true
+              show_states: true
+              colorize_states: true
+              title: Agile {{Import}} Rates
+            graph_span: 1d
+            stacked: false
+            span:
+              start: day
+            apex_config:
+              legend:
+                show: false
+            yaxis:
+              - min: ~0
+                max: ~35
+                decimals: 1
+            series:
+              - entity: >-
+                  event.octopus_energy_electricity_16k0310855_1012816660994_current_day_rates
+                type: column
+                name: ''
+                color: yellow
+                opacity: 1
+                stroke_width: 0
+                unit: p
+                show:
+                  in_header: false
+                  legend_value: false
+                data_generator: |
+                  return entity.attributes.rates.map((entry) => {
+                  return [new Date(entry.start), entry.value_inc_vat * 100];
+                  });
+                offset: '-15min'
+              - entity: >-
+                  event.octopus_energy_electricity_16k0310855_1012816660994_next_day_rates
+                type: column
+                name: ''
+                color: red
+                opacity: 1
+                stroke_width: 0
+                unit: p
+                show:
+                  in_header: true
+                  legend_value: true
+                data_generator: |
+                  return entity.attributes.rates.map((entry) => {
+                  return [new Date(entry.start), entry.value_inc_vat * 100];
+                  });
+                offset: '-15min'
+      - type: vertical-stack
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: script.solar_return_to_self_use_mode
+                    name: Self Use Mode
+                    show_state: false
+                    icon: mdi:home
+                    icon_height: 55px
+                    card_mod:
+                      style: |
+                        ha-card {
+                          {% if states('sensor.solax_inverter_op_state') == 'Self-Use Mode' %}
+                            --ha-card-background: #33cc33;
+                          {% else %}  
+                            --ha-card-background: #808080;
+                          {% endif %}
+                        margin-top: 0px;
+                        height: 110px !important;
+                        margin-left: 5px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: script.solar_force_discharge_battery_to_grid
+                    name: Force Discharge
+                    show_state: false
+                    icon: mdi:home-export-outline
+                    icon_height: 55px
+                    card_mod: null
+                    style: |
+                      ha-card {
+                        {% if states('sensor.solax_inverter_op_state') == 'Force Discharge Mode' %}
+                          --ha-card-background: #000066;
+                        {% else %}  
+                          --ha-card-background: #808080;
+                        {% endif %}
+                      margin-top: 0px;
+                      height: 110px !important;
+                      margin-left: 5px;
+                      margin-right: 0px;
+                      border: none;
+                      --primary-text-color: white;
+                      --secondary-text-color: white;
+                      box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                      }
+              - type: horizontal-stack
+                cards:
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: script.force_charge_solax_battery
+                    name: Force Charge (Max)
+                    show_state: false
+                    icon: mdi:home-import-outline
+                    icon_height: 55px
+                    card_mod:
+                      style: |
+                        ha-card {
+                          {% if states('sensor.solax_inverter_op_state') == 'Force Charge Mode' %}
+                            --ha-card-background: #cc0000;
+                          {% else %}  
+                            --ha-card-background: #808080;
+                          {% endif %}
+                        margin-top: 0px;
+                        height: 110px !important;
+                        margin-left: 5px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }   
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: script.solar_force_charge_solax_battery_slow_charge
+                    name: Slow Charge (Min)
+                    show_state: false
+                    icon: mdi:home-import-outline
+                    icon_height: 55px
+                    card_mod:
+                      style: |
+                        ha-card {
+                          {% if states('sensor.solax_inverter_op_state') == 'Force Charge Mode (min)' %}
+                            --ha-card-background: #33cc33;
+                          {% else %}  
+                            --ha-card-background: #808080;
+                          {% endif %}
+                        margin-top: 0px;
+                        height: 110px !important;
+                        margin-left: 5px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+                  - show_name: true
+                    show_icon: true
+                    type: button
+                    tap_action:
+                      action: toggle
+                    entity: script.solar_battery_soc_hold
+                    name: Batt SOC Hold
+                    show_state: false
+                    icon: mdi:battery-clock-outline
+                    icon_height: 55px
+                    card_mod:
+                      style: |
+                        ha-card {
+                          {% if states('sensor.solax_inverter_op_state') == 'Battery Hold Mode' %}
+                            --ha-card-background: #660033;
+                          {% else %}  
+                            --ha-card-background: #808080;
+                          {% endif %}
+                        margin-top: 0px;
+                        height: 110px !important;
+                        margin-left: 5px;
+                        margin-right: 0px;
+                        border: none;
+                        --primary-text-color: white;
+                        --secondary-text-color: white;
+                        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                        }
+          - type: entities
+            entities:
+              - entity: number.solax_battery_charge_max_current
+                name: Battery Charge Max Current
+              - entity: number.solax_battery_discharge_max_current
+                name: Battery Discharge Max Current
+              - entity: select.solax_charger_use_mode
+                name: Charger Use Mode
+              - entity: select.solax_manual_mode_control
+                name: Manual Mode Control
+              - entity: select.solax_manual_mode_select
+                name: Manual Mode Select
+          - type: vertical-stack
+            cards:
+              - type: energy-solar-graph
+  - title: Octopus
+    path: Octopus
+    icon: mdi:currency-gbp
+    theme: Caule Black Aqua Glass
+    layout:
+      width: 300
+      max_cols: 3
+    type: custom:horizontal-layout
+    badges: []
+    cards:
+      - type: custom:octopus-energy-rates-card
+        currentEntity: >-
+          event.octopus_energy_electricity_16k0310855_1012816660994_current_day_rates
+        targetTimesEntity: >-
+          binary_sensor.octopus_energy_target_octopus_energy_target_octopus_24hours_120mins
+        cols: 2
+        hour12: false
+        showday: true
+        showpast: true
+        title: Octopus Import for Today - p/kWh
+        unitstr: p
+        lowlimit: 10
+        mediumlimit: 20
+        highlimit: 28
+        roundUnits: 2
+        cheapest: true
+        multiplier: 100
+      - type: vertical-stack
+        cards:
+          - type: custom:octopus-energy-rates-card
+            currentEntity: >-
+              event.octopus_energy_electricity_16k0310855_1012816660994_next_day_rates
+            targetTimesEntity: binary_sensor.octopus_energy_target_octopus_24hours_90mins
+            cols: 2
+            hour12: false
+            showday: true
+            showpast: true
+            title: Octopus Import for Tomorrow
+            unitstr: p
+            lowlimit: 15
+            mediumlimit: 20
+            highlimit: 30
+            roundUnits: 2
+            cheapest: true
+            multiplier: 100
+          - type: custom:apexcharts-card
+            experimental:
+              color_threshold: true
+            header:
+              show: true
+              floating: true
+              title: Cost vs Power
+            graph_span: 24h
+            show:
+              last_updated: true
+              loading: true
+            apex_config:
+              legend:
+                show: false
+              chart:
+                zoom:
+                  type: x
+                  enabled: true
+                  autoScaleYaxis: true
+                toolbar:
+                  show: true
+                  autoSelected: zoom
+                xaxis.type: datetime
+              fill:
+                type: gradient
+                gradient:
+                  shadeIntensity: 0.1
+                  opacityFrom: 0.3
+                  opacityTo: 1
+                  inverseColors: true
+            series:
+              - entity: >-
+                  sensor.octopus_energy_electricity_16k0310855_1012816660994_current_rate
+                transform: return x * 100;
+                type: area
+                name: GBP/kWh
+                yaxis_id: pence
+                color: lightblue
+                group_by:
+                  func: avg
+                  duration: 5m
+                stroke_width: 2
+                extend_to: now
+                show:
+                  extremas: false
+                  header_color_threshold: true
+              - entity: sensor.solax_grid_import
+                transform: return x /1;
+                type: line
+                invert: false
+                name: Power
+                yaxis_id: kwh
+                group_by:
+                  func: avg
+                  duration: 5m
+                color: red
+                stroke_width: 2
+                extend_to: now
+            yaxis:
+              - id: pence
+                min: ~0
+                max: ~35
+                opposite: false
+              - id: kwh
+                min: ~0
+                max: ~10
+                opposite: true
+      - type: custom:octopus-energy-rates-card
+        currentEntity: >-
+          event.octopus_energy_electricity_16k0310855_1012816660994_current_day_rates
+        targetTimesEntity: binary_sensor.octopus_energy_target_octopus_high_rate_4hours
+        cols: 2
+        hour12: false
+        showday: true
+        showpast: true
+        title: Octopus Solar Self Use slots
+        unitstr: p
+        lowlimit: 10
+        mediumlimit: 20
+        highlimit: 28
+        roundUnits: 2
+        cheapest: true
+        multiplier: 100
+      - type: custom:octopus-energy-rates-card
+        currentEntity: >-
+          event.octopus_energy_electricity_16k0310855_1012816660994_next_day_rates
+        targetTimesEntity: >-
+          binary_sensor.octopus_energy_target_octopus_energy_target_octopus_24hours_120mins
+        cols: 2
+        hour12: false
+        showday: true
+        showpast: true
+        title: Tomorrows Solar Battery Charge Slots
+        unitstr: p
+        lowlimit: 15
+        mediumlimit: 20
+        highlimit: 30
+        roundUnits: 2
+        cheapest: true
+        multiplier: 100
+        theme: Graphite
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: >-
+                  automation.solax_automatic_battery_charge_120_min_cheap_rate_slot
+                name: Octopus - 2hr cheap slot Automation
+              - entity: >-
+                  automation.octopus_automatic_battery_charge_4hr_cheap_rate_slot
+                name: Octopus - 4hr cheap slot Automation
+              - entity: automation.solax_octopus_agile_highest_rate_automation
+              - entity: automation.octopus_energy_join_saving_session_2
+            title: Octopus Automations
+            show_header_toggle: false
+          - type: entities
+            entities:
+              - entity: sensor.solax_battery_temperature
+            title: SolaX Battery Temperature
+            show_header_toggle: true
+          - chart_type: bar
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.solax_battery_temperature
+            stat_types:
+              - mean
+            title: Battery Temperature
+            hide_legend: true
+            logarithmic_scale: false
+            days_to_show: 1
+  - title: Media
+    background: center / cover no-repeat url('/local/Floorplan/music_notes.jpeg')  fixed
+    path: media
+    icon: mdi:speaker-wireless
+    layout:
+      width: 350
+      max_cols: 2
+    type: custom:horizontal-layout
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: SONOS Card
+            icon: mdi:speaker
+            card_mod:
+              style: |
+                ha-card {
+                  color: red !important;
+                  background: black;
+                  --accent-color: #404040;
+                  --primary-color: white;
+                  --secondary-text-color: white;
+                  --secondary-background-color: #000066;
+                }  
+          - square: false
+            type: grid
+            cards:
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:sonos-card
+                    sections:
+                      - player
+                      - groups
+                      - grouping
+                      - volumes
+                    title: Sonos
+                    showVolumeUpAndDownButtons: false
+                    dynamicVolumeSlider: false
+                    labelForTheAllVolumesSlider: Vol
+                    mediaBrowserItemsPerRow: 11
+                    heightPercentage: 120
+                    widthPercentage: 85
+                    topFavorites:
+                      - ''
+                    hideGroupCurrentTrack: false
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white !important;
+                          background: gray;
+                          --accent-color: #404040;
+                          --primary-color: white;
+                          --secondary-text-color: white;
+                          --secondary-background-color: #000066;
+                        }   
+                columns: 1
+            columns: 1
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Playlists
+            icon: mdi:music
+            card_mod:
+              style: |
+                ha-card {
+                  color: red !important;
+                  background: black;
+                  --accent-color: #404040;
+                  --primary-color: white;
+                  --secondary-text-color: white;
+                  --secondary-background-color: #000066;
+                }  
+          - square: false
+            type: grid
+            cards:
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:sonos-card
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white !important;
+                          background: gray;
+                          --accent-color: blue;
+                          --primary-color: white;
+                          --secondary-text-color: black;
+                          --secondary-background-color: pink;
+                        }   
+                    sections:
+                      - media browser
+                    title: Favorites
+                    showVolumeUpAndDownButtons: true
+                    dynamicVolumeSlider: true
+                    labelForTheAllVolumesSlider: Vol
+                    heightPercentage: 120
+                    mediaBrowserItemsPerRow: 4
+                    excludeItemsInEntitiesList: false
+                    topFavorites:
+                      - ''
+                    mediaBrowserShowTitleForThumbnailIcons: true
+                    widthPercentage: 85
+                columns: 1
+            columns: 1
+  - theme: ios-dark-mode-light-blue
+    title: Cameras
+    path: camera
+    icon: mdi:cctv
+    type: custom:masonry-layout
+    layout: {}
+    badges: []
+    cards:
+      - type: grid
+        square: false
+        columns: 1
+        cards:
+          - show_state: false
+            show_name: false
+            camera_view: auto
+            type: picture-entity
+            entity: camera.reolink_camera_sub
+            camera_image: camera.reolink_camera_sub
+          - type: entities
+            entities:
+              - entity: binary_sensor.reolink_camera_motion
+                name: Motion
+                secondary_info: last-changed
+              - entity: binary_sensor.reolink_camera_person
+                name: Person
+                secondary_info: last-changed
+              - entity: binary_sensor.reolink_camera_visitor
+                name: Visitor
+                secondary_info: last-changed
+              - entity: number.reolink_camera_motion_sensitivity
+                name: Motion Sensitivity
+                secondary_info: none
+              - entity: siren.reolink_camera_siren
+            title: Reolink Camera
+      - square: false
+        type: grid
+        cards:
+          - show_state: false
+            show_name: false
+            camera_view: live
+            type: picture-entity
+            entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_102
+            camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_102
+          - square: false
+            type: grid
+            cards:
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_202
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_202
+                name: Driveway
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_302
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_302
+                name: Back Garden
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_602
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_602
+                name: Pond
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_502
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_502
+                name: Extension
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_402
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_402
+                name: Kitchen
+              - show_state: false
+                show_name: false
+                camera_view: live
+                type: picture-entity
+                entity: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_702
+                camera_image: camera.ds_7608ni_e2_8p_a0820170816aarr815174588wcvu_702
+                name: Porch
+            columns: 2
+        columns: 1
+  - title: Plugs & Sockets
+    background: center / cover no-repeat url('/local/Floorplan/Pylons.jpeg')  fixed
+    path: sockets
+    icon: mdi:power-socket-uk
+    type: custom:horizontal-layout
+    theme: Caule Black Blue Glass
+    layout:
+      width: 350
+      max_cols: 2
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Sockets
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Tumble Dryer
+                icon: mdi:power-socket-uk
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(102,204,255,50%) 20%, rgb(0, 0,
+                            204,90%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 5px double rgb(0,255,255, 100%)
+                styles:
+                  card:
+                    - font: 15px/20px Arial
+                    - background: >-
+                        linear-gradient(rgb(128,128,128, 10%), 20%,
+                        rgb(0,0,0,90%))
+                    - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.smart_plug_no_1
+              - type: custom:button-card
+                name: Tree Lights
+                icon: mdi:pine-tree
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(102,204,255,50%) 20%, rgb(0, 0,
+                            204,90%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 5px double rgb(0,255,255, 100%)
+                styles:
+                  card:
+                    - font: 15px/20px Arial
+                    - background: >-
+                        linear-gradient(rgb(128,128,128, 10%), 20%,
+                        rgb(0,0,0,90%))
+                    - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.smart_plug_no_2
+              - type: custom:button-card
+                name: TV Power Bar
+                icon: mdi:television-classic
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(102,204,255,50%) 20%, rgb(0, 0,
+                            204,90%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 5px double rgb(0,255,255, 100%)
+                styles:
+                  card:
+                    - font: 15px/20px Arial
+                    - background: >-
+                        linear-gradient(rgb(128,128,128, 10%), 20%,
+                        rgb(0,0,0,90%))
+                    - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.smart_plug_no3_smart_plug_no3
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: horizontal-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    name: TAPO 4 (Spare)
+                    icon: mdi:nas
+                    show_state: true
+                    color: white
+                    state:
+                      - value: 'on'
+                        color: red
+                        spin: false
+                        styles:
+                          name:
+                            - color: white
+                            - font: 15px/20px Arial
+                            - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                          card:
+                            - background: >-
+                                linear-gradient(rgb(102,204,255,50%) 20%, rgb(0,
+                                0, 204,90%))
+                            - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                            - border: 5px double rgb(0,255,255, 100%)
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 20%,
+                            rgb(0,0,0,90%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white;
+                        }
+                    tap_action:
+                      action: toggle
+                    entity: switch.tapo_4_nas_hub_tapo_4_nas_hub
+                  - type: custom:button-card
+                    name: Air Fryer
+                    icon: mdi:stove
+                    show_state: true
+                    color: white
+                    state:
+                      - value: 'on'
+                        color: red
+                        spin: false
+                        styles:
+                          name:
+                            - color: white
+                            - font: 15px/20px Arial
+                            - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                          card:
+                            - background: >-
+                                linear-gradient(rgb(102,204,255,50%) 20%, rgb(0,
+                                0, 204,90%))
+                            - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                            - border: 5px double rgb(0,255,255, 100%)
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 20%,
+                            rgb(0,0,0,90%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white;
+                        }
+                    tap_action:
+                      action: toggle
+                    entity: switch.tapo_5_tapo_5
+                  - type: custom:button-card
+                    name: Hot Water Tap
+                    icon: mdi:kettle-outline
+                    show_state: true
+                    color: white
+                    state:
+                      - value: 'on'
+                        color: red
+                        spin: false
+                        styles:
+                          name:
+                            - color: white
+                            - font: 15px/20px Arial
+                            - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                          card:
+                            - background: >-
+                                linear-gradient(rgb(102,204,255,50%) 20%, rgb(0,
+                                0, 204,90%))
+                            - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                            - border: 5px double rgb(0,255,255, 100%)
+                    styles:
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(128,128,128, 10%), 20%,
+                            rgb(0,0,0,90%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                    card_mod:
+                      style: |
+                        ha-card {
+                          color: white;
+                        }
+                    tap_action:
+                      action: toggle
+                    entity: switch.hot_water_tap_tapo_6
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: LIghts
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Dining Room
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:ceiling-light
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:ceiling-light
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.dining_room_rl_1_63
+              - type: custom:button-card
+                name: Hallway Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lightbulb-spot
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lightbulb-spot-off
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.hallway_relay_45
+              - type: custom:button-card
+                name: Kitchen Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lightbulb-spot
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lightbulb-spot-off
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.kitchen_lights_relay_91
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Office Light
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:track-light
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:track-light
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: light.ikea_office_light_psu
+              - type: custom:button-card
+                name: Office LED
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:led-strip-variant
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:led-strip-variant-off
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: light.tcp_smart_tape_light
+              - type: custom:button-card
+                name: WLED Light Strip
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:led-strip-variant
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:led-strip-variant
+                    color: white
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: light.wled
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Kick Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.kick_lights_relay_101
+              - type: custom:button-card
+                name: Patio Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.patio_lights_relay_113
+              - type: custom:button-card
+                name: Drive Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.drive_light_relay_137
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Kick Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.kick_lights_relay_101
+              - type: custom:button-card
+                name: Patio Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.patio_lights_relay_113
+              - type: custom:button-card
+                name: Drive Lights
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:lamp
+                    color: yellow
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - background: >-
+                            linear-gradient(rgb(77,0,8,100%) 100%, rgb(77, 0,
+                            8,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px double rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:lamp
+                    color: grey
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                        - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+                      card:
+                        - font: 15px/20px Arial
+                        - background: >-
+                            linear-gradient(rgb(102,153,255, 10%),
+                            rgb(102,153,255,100%))
+                        - border: 5px solid rgb(18,81,219, 50%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: toggle
+                entity: switch.patio_lights_relay_113
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: Doors
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Front Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.front_door_118
+              - type: custom:button-card
+                name: Bedroom Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.bedroom_door_79
+              - type: custom:button-card
+                name: Extension Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.extension_patio_door_90
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Summer House Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.summer_house_door_20
+              - type: custom:button-card
+                name: Fridge Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:fridge-alert
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.aqara_door_switch_2_contact
+              - type: custom:button-card
+                name: Freezer Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:fridge-alert
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.aqara_door_switch_1_contact
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+          - type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Back Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.back_door_48
+              - type: custom:button-card
+                name: Garage Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.garage_door_67
+              - type: custom:button-card
+                name: Garage U&O Door
+                show_state: true
+                color: white
+                state:
+                  - value: 'on'
+                    icon: mdi:door-open
+                    color: red
+                    spin: false
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                  - value: 'off'
+                    icon: mdi:door
+                    color: green
+                    styles:
+                      name:
+                        - color: white
+                        - font: 15px/20px Arial
+                      card:
+                        - background: >-
+                            radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                            0,100%))
+                        - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                        - border: 4px single rgb(0,255,255, 100%)
+                card_mod:
+                  style: |
+                    ha-card {
+                      color: white;
+                    }
+                tap_action:
+                  action: more-info
+                entity: binary_sensor.garage_u_o_door_65
+  - title: Hot Tub
+    background: center / cover no-repeat url('/local/Floorplan/bubbles1.jpeg') fixed
+    path: hot tub
+    icon: mdi:hot-tub
+    badges: []
+    cards:
+      - square: false
+        type: grid
+        columns: 1
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: '  '
+          - type: thermostat
+            entity: climate.layzspa_wifi_controller_layzspa_temperature_control
+            name: Hot Tub
+            card_mod:
+              style: |
+                ha-card {
+                --ha-card-background: #000066;
+                margin-top: 0px;
+                height: 300px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+            theme: Graphite
+          - square: false
+            type: grid
+            cards:
+              - type: custom:mushroom-light-card
+                entity: switch.layzspa_wifi_controller_layzspa_pump
+                name: Pump
+                icon: mdi:pump
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('switch.layzspa_wifi_controller_layzspa_pump') == 'on' %}
+                        --ha-card-background: green;
+                      {% else %}  
+                        --ha-card-background: #000066;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                tap_action:
+                  action: toggle
+                icon_color: green
+                fill_container: true
+                show_color_control: false
+                layout: vertical
+              - type: custom:mushroom-light-card
+                entity: switch.layzspa_wifi_controller_layzspa_airbubbles
+                name: Bubbles
+                icon_color: blue
+                fill_container: true
+                layout: vertical
+                icon_type: icon
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('switch.layzspa_wifi_controller_layzspa_airbubbles') == 'on' %}
+                        --ha-card-background: green;
+                      {% else %}  
+                        --ha-card-background: #000066;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                tap_action:
+                  action: toggle
+                secondary_info: state
+                use_light_color: false
+                show_color_temp_control: true
+              - type: custom:mushroom-light-card
+                entity: switch.layzspa_wifi_controller_layzspa_heat_regulation
+                icon: mdi:heating-coil
+                icon_color: black
+                tap_action:
+                  action: toggle
+                name: Heater
+                fill_container: true
+                layout: vertical
+                secondary_info: state
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('switch.layzspa_wifi_controller_layzspa_heat_regulation') == 'on' %}
+                        --ha-card-background: green;
+                      {% else %}  
+                        --ha-card-background: #000066;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+              - type: custom:mushroom-light-card
+                entity: sensor.hot_tub_heater_on
+                name: Heater Element
+                icon: mdi:heating-coil
+                icon_color: green
+                tap_action:
+                  action: more-info
+                fill_container: true
+                hold_action:
+                  action: none
+                use_light_color: true
+                show_brightness_control: false
+                show_color_temp_control: false
+                show_color_control: false
+                layout: vertical
+                double_tap_action:
+                  action: none
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('sensor.hot_tub_heater_on')|int > 0.5 %}
+                        --ha-card-background: red;
+                      {% else %}  
+                        --ha-card-background: #000066;
+                      {% endif %}
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+              - type: custom:mushroom-light-card
+                entity: light.tcp_smart_tape_light
+                name: Tub Lights
+                icon: mdi:led-strip-variant
+                icon_color: red
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('light.tcp_smart_tape_light') == 'on' %}
+                        --ha-card-background: red;
+                      {% else %}  
+                        --ha-card-background: #000066;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 0px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                tap_action:
+                  action: toggle
+                fill_container: true
+                hold_action:
+                  action: more-info
+                use_light_color: true
+                show_brightness_control: false
+                show_color_temp_control: false
+                show_color_control: false
+                layout: vertical
+            columns: 2
+      - type: vertical-stack
+        cards:
+          - type: custom:bubble-card
+            card_type: separator
+            name: '  '
+          - type: entities
+            card_mod:
+              style: |
+                ha-card {
+                --ha-card-background: #000066;
+                margin-top: 0px;
+                height: 300px !important;
+                margin-left: 0px;
+                margin-right: 0px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+            entities:
+              - entity: sensor.layzspa_wifi_controller_layzspa_temp_c
+                name: Water Temperature (C)
+                icon: mdi:temperature-celsius
+              - entity: sensor.layzspa_wifi_controller_layzspa_ambient_temp_c
+                name: Hot Tub Air temp (C)
+              - entity: sensor.layzspa_wifi_controller_layzspa_target_temp_c
+                name: Hot Tub Target temp (C)
+                icon: mdi:thermometer-chevron-up
+              - entity: sensor.layzspa_wifi_controller_layzspa_time_to_ready
+                name: Hot Tub Ready in -
+                icon: mdi:timer-check
+              - entity: binary_sensor.layzspa_wifi_controller_layzspa_heater
+                name: Heater Status
+                icon: mdi:heating-coil
+              - entity: binary_sensor.layzspa_wifi_controller_layzspa_ready
+                name: Hot Tub Status
+              - entity: sensor.layzspa_wifi_controller_layzspa_today
+                name: Layzspa today
+              - entity: sensor.layzspa_wifi_controller_layzspa_energy
+                name: Energy Usage (Total)
+            theme: Graphite
+          - graph: line
+            type: sensor
+            detail: 2
+            unit: Deg
+            entity: sensor.layzspa_wifi_controller_layzspa_temp_c
+            theme: Graphite
+            name: Hot Tub Temperature
+            hours_to_show: 12
+          - square: false
+            type: grid
+            cards:
+              - square: false
+                type: grid
+                cards:
+                  - type: custom:bar-card
+                    entities:
+                      - entity: sensor.solax_house_load
+                        name: House Load
+                        indicator: inside
+                        icon: mdi:home
+                        unit_of_measurement: W
+                        decimal: '1'
+                        min: '0'
+                        columns: '1'
+                        severity:
+                          - from: '0'
+                            color: green
+                            to: '800'
+                          - from: '801'
+                            to: '2000'
+                            color: orange
+                          - from: '2000'
+                            to: '5000'
+                            color: red
+                        width: 130%
+                        max: '5000'
+                      - entity: sensor.solax_pv_power_total
+                        name: PV Generation (4.51Kw)
+                        indicator: inside
+                        icon: mdi:solar-power-variant
+                        unit_of_measurement: W
+                        decimal: '1'
+                        min: '0'
+                        columns: '1'
+                        severity:
+                          - from: '0'
+                            color: null
+                            to: '999'
+                          - from: '1000'
+                            to: '1999'
+                            color: orange
+                          - from: '2000'
+                            to: '2999'
+                            color: orange
+                          - from: '3000'
+                            to: '4000'
+                            color: green
+                        width: 130%
+                        max: '5000'
+                      - entity: sensor.layzspa_wifi_controller_layzspa_power
+                        name: Hot Tub Power
+                        indicator: inside
+                        icon: mdi:lightning-bolt-circle
+                        unit_of_measurement: W
+                        decimal: '1'
+                        min: '0'
+                        columns: '1'
+                        severity:
+                          - from: '0'
+                            color: null
+                            to: '800'
+                          - from: '801'
+                            to: '1600'
+                            color: orange
+                          - from: '1601'
+                            to: '2200'
+                            color: orange
+                          - from: '2201'
+                            to: '2400'
+                            color: green
+                        width: 130%
+                        max: '5000'
+                columns: 1
+            columns: 1
+  - theme: ios-light-mode-blue-red
+    title: Admin
+    path: admin
+    icon: mdi:account-plus
+    layout:
+      width: 600
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: input_boolean.kiosk_mode
+                secondary_info: last-updated
+              - entity: automation.dusk_lights_on_timers
+                secondary_info: last-triggered
+              - entity: automation.wallpanel_motion_wake_up
+            title: Automations
+            theme: Graphite
+            state_color: true
+            show_header_toggle: false
+          - type: entities
+            entities:
+              - entity: automation.reolink_image_pop_up_using_browser_mod
+                secondary_info: last-triggered
+              - entity: automation.disable_led_automation
+              - entity: automation.enable_led_automaion
+              - entity: automation.test_1
+              - entity: automation.reolink_motion_detection
+              - entity: automation.reolink_someone_at_door_media_chime
+              - entity: automation.door_send_snapshot_to_iphone_se_whn_doorbell_rings
+            title: Door Related Automations
+            theme: Graphite
+            state_color: true
+            show_header_toggle: false
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: automation.ikea_office_light_switch_on_off
+                icon: mdi:lightbulb-group
+                secondary_info: last-triggered
+              - entity: automation.lights_office_light_turn_on_on_sunset
+                icon: mdi:lightbulb-group
+                secondary_info: last-triggered
+              - entity: automation.sensor_light
+                icon: mdi:lightbulb-group
+                secondary_info: last-triggered
+            title: Lights related Automations
+            theme: Graphite
+            state_color: true
+            show_header_toggle: false
+          - type: custom:state-switch
+            entity: group
+            states:
+              admin:
+                type: custom:mushroom-chips-card
+                chips:
+                  - type: menu
+                  - type: action
+                    icon_color: light-green
+                    icon: mdi:arrow-expand-all
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      dates: {}
+                      target:
+                        entity_id: input_boolean.kiosk_mode
+          - type: custom:state-switch
+            entity: group
+            states:
+              admin:
+                type: custom:mushroom-chips-card
+                chips:
+                  - type: menu
+                  - type: action
+                    icon_color: light-green
+                    icon: mdi:arrow-expand-all
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      dates: {}
+                      target:
+                        entity_id: input_boolean.kiosk_mode
+      - type: custom:state-switch
+        entity: group
+        states:
+          admin:
+            type: custom:mushroom-chips-card
+            chips:
+              - type: menu
+              - type: action
+                icon_color: light-green
+                icon: mdi:arrow-expand-all
+                tap_action:
+                  action: call-service
+                  service: input_boolean.toggle
+                  dates: {}
+                  target:
+                    entity_id: input_boolean.kiosk_mode
+  - title: Scatch Page - Ideas
+    path: scrath-page-ideas
+    badges: []
+    cards:
+      - features:
+          - type: target-temperature
+        type: tile
+        entity: climate.hive_hallway_trv
+        show_entity_picture: false
+        vertical: false
+        icon: mdi:heating-coil
+        color: red
+        tap_action:
+          action: call-service
+          service: hive.boost_heating_on
+          target: {}
+          data:
+            entity_id: climate.hive_hallway_trv
+            time_period: '01:00:00'
+            temperature: 22
+        name: Test Radiator
+        icon_tap_action:
+          action: more-info
+        card_mod:
+          style: |
+            ha-card {
+              animation: borderPulse 2s ease-out infinite;
+            }
+            @keyframes borderPulse {
+              100% {
+                box-shadow: 0 0 50px red;
+              }
+            }
+
+            margin-top: 0px;
+            height: 120px !important;
+            margin-left: 0px;
+            margin-right: 10px;
+            border: none;
+            --primary-text-color: white;
+            --secondary-text-color: white;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+            }
+      - type: custom:mushroom-person-card
+        entity: device_tracker.martin
+        primary_info: none
+        secondary_info: none
+        use_entity_picture: true
+        card_mod:
+          style: |
+            mushroom-shape-avatar {    
+              {{ 'filter: grayscale(100%);' if is_state('person.rhys', 'not_home') }}
+            }
+      - square: false
+        type: grid
+        cards:
+          - square: false
+            type: grid
+            cards:
+              - square: false
+                type: grid
+                cards: []
+                columns: 3
+              - type: entities
+                entities:
+                  - entity: sensor.solax_today_s_import_energy
+                    secondary_info: none
+                    name: Todays Total Import Energy
+                    card_mod:
+                      style: |
+                        :host {
+                          --paper-item-icon-color: red;
+                        }
+                show_header_toggle: false
+                state_color: true
+            columns: 1
+        columns: 1
+        card_mod:
+          style: |
+            ha-card {
+              color: red;
+            }
+      - chart_type: line
+        period: hour
+        type: statistics-graph
+        entities:
+          - sensor.hive_hallway_trv_current_temperature
+          - sensor.hive_kitchen_trv_current_temperature
+          - sensor.hive_extension_trv_current_temperature
+          - sensor.hive_living_rm_trv_current_temperature
+          - sensor.hive_dining_room_trv_current_temperature
+        days_to_show: 1
+        stat_types:
+          - mean
+        title: Solar Variables
+        hide_legend: false
+        card_mod:
+          style: |
+            ha-card {
+            --ha-card-background: black;
+            margin-top: 0px;
+            height: 420px !important;
+            margin-left: 10px;
+            margin-right: 10px;
+            border: none;
+            --primary-text-color: white;
+            --secondary-text-color: white;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+            }
+      - square: false
+        type: grid
+        cards:
+          - square: false
+            type: grid
+            cards:
+              - type: custom:mushroom-light-card
+                icon_color: red
+                fill_container: true
+                icon_type: icon
+                tap_action:
+                  action: none
+                secondary_info: state
+                use_light_color: false
+                show_color_temp_control: false
+                entity: sensor.home_state
+                name: Heating Status
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('sensor.home_state') == 'ON' %}
+                        --ha-card-background: #4d0008;;
+                      {% else %}  
+                        --ha-card-background: #3399ff;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 10px;
+                    margin-right: 0px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon: mdi:heating-coil
+                layout: vertical
+              - type: custom:mushroom-light-card
+                icon_color: red
+                fill_container: true
+                icon_type: icon
+                tap_action:
+                  action: none
+                secondary_info: state
+                use_light_color: false
+                show_color_temp_control: false
+                entity: sensor.home_boost
+                name: Boost Status
+                card_mod:
+                  style: |
+                    ha-card {
+                      {% if states('sensor.home_boost') == 'ON' %}
+                        --ha-card-background: #4d0008;;
+                      {% else %}  
+                        --ha-card-background: #3399ff;
+                      {% endif %}
+                    margin-top: 0px;
+                    height: 120px !important;
+                    margin-left: 0px;
+                    margin-right: 10px;
+                    border: none;
+                    --primary-text-color: white;
+                    --secondary-text-color: white;
+                    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                    }
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+                icon: mdi:heating-coil
+                layout: vertical
+            columns: 2
+        columns: 1
+      - type: thermostat
+        entity: climate.home
+        name: Heating
+        card_mod:
+          style: |
+            ha-card {
+              {% if states('sensor.climate.home') == 'ON' %}
+                --ha-card-background: #4d0008;
+              {% else %}  
+                --ha-card-background: #3399ff;
+              {% endif %}
+            margin-top: 0px;
+            height: 300px !important;
+            margin-left: 10px;
+            margin-right: 10px;
+            border: none;
+            --primary-text-color: white;
+            --secondary-text-color: white;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+            }
+      - type: custom:mushroom-template-card
+        primary: Spooky
+        secondary: ''
+        icon: mdi:home
+        picture: /local/icons8-ghost.gif
+      - type: custom:minimalistic-area-card
+        title: Bathroom
+        area: bathroom
+        hide_unavailable: false
+        tap_action:
+          action: navigate
+          navigation_path: /config/areas/area/bathroom
+        entities:
+          - light.tcp_smart_tape_light
+          - switch.tapo_6_tapo_6
+          - sensor.solax_today_s_import_energy
+          - sensor.solax_today_s_export_energy
+          - binary_sensor.reolink_camera_motion
+          - binary_sensor.reolink_camera_person
+      - camera_view: auto
+        type: picture-glance
+        title: Hollies Room
+        image: https://demo.home-assistant.io/stub_config/kitchen.png
+        entities:
+          - entity: climate.hollies_room
+          - entity: sensor.hollies_room_current_temperature
+          - entity: sensor.hollies_room_target_temperature
+        tap_action:
+          action: call-service
+          service: hive.boost_heating_on
+          target: {}
+          data:
+            entity_id: climate.hollies_room
+            time_period: '01:00:00'
+            temperature: 22
+      - show_name: true
+        show_icon: true
+        type: button
+        tap_action:
+          action: toggle
+        entity: script.script_set_all_trvs_to_helper_value
+        name: Set all TRV's
+        show_state: true
+      - square: false
+        type: grid
+        cards:
+          - features:
+              - type: target-temperature
+            type: tile
+            entity: climate.hive_living_rm_trv
+            show_entity_picture: false
+            vertical: false
+            icon: mdi:heating-coil
+            color: red
+            tap_action:
+              action: more-info
+            name: Living Room Radiator
+            icon_tap_action:
+              action: call-service
+              service: hive.boost_heating_on
+              target: {}
+              data:
+                entity_id: sensor.hive_living_rm_trv_boost
+                time_period: '01:00:00'
+                temperature: 22
+            card_mod:
+              style: |
+                ha-card {
+                  {% if states('sensor.hive_living_rm_trv_state') == 'ON' %}
+                    --ha-card-background: #4d0008;;
+                  {% else %}  
+                    --ha-card-background: #6699ff;
+                  {% endif %}
+                margin-top: 0px;
+                height: 120px !important;
+                margin-left: 0px;
+                margin-right: 10px;
+                border: none;
+                --primary-text-color: white;
+                --secondary-text-color: white;
+                box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.9);
+                }
+          - type: entity
+            entity: sensor.hive_extension_trv_current_temperature
+            state_color: true
+            name: Extension Temperature
+          - type: custom:mushroom-chips-card
+            chips:
+              - type: entity
+                entity: climate.hive_extension_trv
+                icon: mdi:coolant-temperature
+                name: extension
+                content_info: state
+                use_entity_picture: true
+                icon_color: red
+              - type: entity
+                entity: sensor.hive_extension_trv_mode
+                tap_action:
+                  action: call-service
+                  service: hive.boost_heating
+                  target: {}
+                content_info: state
+            alignment: center
+        columns: 1
+      - type: entities
+        entities:
+          - entity: input_number.helper_set_all_trvs
+        title: Helpers
+      - show_name: true
+        show_icon: true
+        type: button
+        entity: switch.tapo_6_tapo_6
+        name: Tapo
+        tap_action:
+          action: call-service
+          service: browser_mod.popup
+          data:
+            content: >
+              <p> <ha-icon icon="mdi:chat-question" style="color:
+              steelblue;"></ha-icon> <b> Are you sure you want to turn this
+              off?</b> </p>
+            right_button: 'Yes'
+            left_button: 'No'
+            right_button_action:
+              service: switch.turn_off
+              data:
+                entity_id: switch.tapo_6_tapo_6
+            left_button_action:
+              service: switch.turn_on
+              data:
+                entity_id: switch.tapo_6_tapo_6
+          target:
+            device_id: switch.tapo_6_tapo_6
+      - type: custom:banner-card
+        heading:
+          - mdi:shower
+          - Banner card
+          - mdi:paper-roll
+      - type: custom:button-card
+        name: Door
+        show_state: true
+        color: white
+        state:
+          - value: 'on'
+            icon: mdi:door
+            color: rgb(51, 204, 51)
+            spin: false
+            styles:
+              name:
+                - color: white
+                - font: 25px/25px Arial
+                - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+              card:
+                - background: >-
+                    radial-gradient(rgb(255, 255, 255,40%) 0%, rgb(0, 0,
+                    0,100%))
+                - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                - border: 4px single rgb(0,255,255, 100%)
+          - value: 'off'
+            icon: mdi:door-open
+            color: red
+            styles:
+              name:
+                - color: white
+                - font: 25px/25px Arial
+                - text-shadow: 1px 1px 5px rgb(227, 223, 255)
+              card:
+                - background: >-
+                    radial-gradient(rgb(242, 242, 242,0%) 5%, rgb(153, 0,
+                    0,100%))
+                - box-shadow: 0px 0px 10px rgb(18,81,219,100%)
+                - border: 4px single rgb(0,255,255, 100%)
+        card_mod:
+          style: |
+            ha-card {
+              color: white;
+            }
+        tap_action:
+          action: toggle
+        entity: input_boolean.test_button
